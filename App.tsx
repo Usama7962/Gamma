@@ -14,15 +14,15 @@ const TriangleIcon = ({ className }: { className?: string }) => (
 );
 
 const Logo = () => (
-  <div className="flex items-center cursor-pointer group select-none" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-    {/* Large Screen: GAMMA SWEEP > */}
+  <button 
+    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+    className="flex items-center cursor-pointer group select-none transition-transform hover:scale-[0.98]"
+  >
     <div className="hidden lg:flex items-center gap-1 italic font-black text-3xl tracking-tighter">
       <span className="text-slate-900 dark:text-white uppercase font-black">Gamma</span>
       <span className="text-gammaAqua uppercase font-black">Sweep</span>
       <TriangleIcon className="text-slate-900 dark:text-white ml-0.5" />
     </div>
-
-    {/* Medium Screen: GAMMA / SWEEP > */}
     <div className="hidden md:flex lg:hidden flex-col italic font-black text-xl leading-[0.8] tracking-tighter">
       <span className="text-slate-900 dark:text-white uppercase font-black">Gamma</span>
       <div className="flex items-center gap-1 self-end translate-x-4">
@@ -30,14 +30,12 @@ const Logo = () => (
         <TriangleIcon className="text-slate-900 dark:text-white w-3 h-3" />
       </div>
     </div>
-
-    {/* Small Screen: GS > */}
     <div className="flex md:hidden items-center gap-0.5 italic font-black text-2xl tracking-tighter">
       <span className="text-slate-900 dark:text-white uppercase font-black">G</span>
       <span className="text-gammaAqua uppercase font-black">s</span>
       <TriangleIcon className="text-slate-900 dark:text-white w-4 h-4" />
     </div>
-  </div>
+  </button>
 );
 
 const App: React.FC = () => {
@@ -63,10 +61,15 @@ const App: React.FC = () => {
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-white dark:bg-darkBg transition-colors duration-500 overflow-hidden font-inter">
-      
-      {/* Dynamic Background Mesh Blobs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-gammaBlue/5 dark:bg-gammaBlue/10 blur-[150px] rounded-full animate-blob" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-gammaAqua/5 dark:bg-gammaAqua/10 blur-[150px] rounded-full animate-blob [animation-delay:3s]" />
@@ -75,11 +78,8 @@ const App: React.FC = () => {
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
       <main className="relative z-10 grid-pattern">
-        
-        {/* Hero Section */}
-        <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-32">
+        <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-32 scroll-mt-28">
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
-            
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -100,24 +100,25 @@ const App: React.FC = () => {
                 <span className="text-shimmer italic">Social Empire.</span>
               </h1>
               
-              <p className="text-2xl text-slate-500 dark:text-slate-400 mb-14 max-w-xl leading-relaxed font-normal">
+              <p className="text-2xl text-slate-500 dark:text-slate-400 mb-14 max-w-xl leading-relaxed font-normal font-inter">
                 High-performance B2B sweepstakes infrastructure. Engineered for founders who demand institutional-grade reliability and 100% compliance.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6">
-                <motion.a 
+                <motion.button 
                   whileHover={{ scale: 1.02, translateY: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  href="#contact" 
-                  className="bg-gammaBlue text-white font-bold px-12 py-5 rounded-xl shadow-2xl shadow-gammaBlue/20 transition-all text-lg tracking-wide text-center uppercase"
+                  onClick={() => scrollToSection('contact')}
+                  className="bg-gammaBlue text-white font-bold px-12 py-5 rounded-xl shadow-2xl shadow-gammaBlue/20 transition-all text-lg tracking-wide text-center uppercase font-inter"
                 >
                   Book Discovery
-                </motion.a>
+                </motion.button>
                 <motion.button 
                   whileHover={{ backgroundColor: "rgba(15, 23, 42, 0.05)", translateY: -2 }}
-                  className="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-bold px-12 py-5 rounded-xl transition-all text-lg tracking-wide uppercase"
+                  onClick={() => scrollToSection('services')}
+                  className="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-bold px-12 py-5 rounded-xl transition-all text-lg tracking-wide uppercase text-center flex items-center justify-center font-inter"
                 >
-                  View Technology
+                  View Solutions
                 </motion.button>
               </div>
 
@@ -146,18 +147,17 @@ const App: React.FC = () => {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.button 
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
             className="absolute bottom-10 left-1/2 -translate-x-1/2 text-slate-300 cursor-pointer hover:text-gammaBlue transition-colors"
-            onClick={() => document.getElementById('partners')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => scrollToSection('partners')}
           >
             <ChevronDown className="w-8 h-8" />
-          </motion.div>
+          </motion.button>
         </section>
 
-        {/* Brand Recognition Strip */}
-        <section id="partners" className="py-24 bg-white/40 dark:bg-darkSurface/20 backdrop-blur-xl border-y border-slate-100 dark:border-white/5 relative overflow-hidden">
+        <section id="partners" className="py-24 bg-white/40 dark:bg-darkSurface/20 backdrop-blur-xl border-y border-slate-100 dark:border-white/5 relative overflow-hidden scroll-mt-28">
            <div className="max-w-7xl mx-auto px-6">
               <p className="text-center text-[11px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-[0.5em] mb-16">Institutional Partnerships Across the Globe</p>
               <div className="flex flex-wrap justify-center lg:justify-between items-center gap-20">
@@ -176,8 +176,7 @@ const App: React.FC = () => {
            </div>
         </section>
 
-        {/* Feature Story Section */}
-        <section id="services" className="py-40 scroll-mt-20">
+        <section id="services" className="py-40 scroll-mt-32 bg-white/20 dark:bg-darkBg/20">
            <div className="max-w-7xl mx-auto px-6">
               <div className="grid lg:grid-cols-2 gap-32 items-center">
                  <motion.div
@@ -186,6 +185,7 @@ const App: React.FC = () => {
                   transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
                  >
+                    <div className="text-gammaBlue font-black text-[12px] uppercase tracking-[0.5em] mb-6 font-inter">Our Solutions</div>
                     <h2 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-10 leading-[1.05] tracking-tighter font-roboto">
                        SaaS DNA. <br /><span className="text-gammaBlue">Enterprise Reliability.</span>
                     </h2>
@@ -214,112 +214,71 @@ const App: React.FC = () => {
                        ))}
                     </div>
                  </motion.div>
-
-                 <div className="grid grid-cols-2 gap-8" id="about">
-                    {[
-                      { val: "99.9%", label: "Uptime SLA", color: "bg-white dark:bg-darkSurface", delay: 0 },
-                      { val: "24/7", label: "Monitoring", color: "bg-gammaBlue text-white", delay: 0.1, featured: true },
-                      { val: "4wks", label: "To Market", color: "bg-gammaAqua text-slate-900", delay: 0.2 },
-                      { val: "13y", label: "Core Experience", color: "bg-slate-50 dark:bg-slate-800", delay: 0.3 }
-                    ].map((item, i) => (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: item.delay, duration: 0.5 }}
-                        viewport={{ once: true }}
-                        key={i} 
-                        className={`aspect-square ${item.color} rounded-[3.5rem] p-12 flex flex-col justify-end border border-slate-200/50 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-700 group ${i % 2 !== 0 ? 'mt-16' : ''}`}
-                      >
-                         <div className={`text-6xl font-black mb-4 tracking-tighter font-roboto ${item.featured ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{item.val}</div>
-                         <div className={`text-[12px] font-black uppercase tracking-[0.3em] font-inter ${item.featured ? 'text-blue-100' : 'text-slate-400'}`}>{item.label}</div>
-                      </motion.div>
-                    ))}
+                 <div className="relative">
+                    <DashboardPreview />
                  </div>
               </div>
            </div>
         </section>
 
-        {/* Technical Features Grid */}
-        <section id="features" className="py-40 bg-slate-50/50 dark:bg-darkSurface/10 scroll-mt-20">
+        <section id="about" className="py-40 scroll-mt-32">
+           <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center mb-24">
+                 <div className="text-gammaBlue font-black text-[12px] uppercase tracking-[0.5em] mb-6 font-inter">About GammaSweep</div>
+                 <h2 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter font-roboto">Proven Performance.</h2>
+                 <p className="text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium font-inter">Our track record speaks through the success of our global partners. We build the infrastructure that powers the future of social sweepstakes.</p>
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                {[
+                  { val: "99.9%", label: "Uptime SLA", color: "bg-white dark:bg-darkSurface", delay: 0 },
+                  { val: "24/7", label: "Monitoring", color: "bg-gammaBlue text-white", delay: 0.1, featured: true },
+                  { val: "4wks", label: "To Market", color: "bg-gammaAqua text-slate-900", delay: 0.2 },
+                  { val: "13y", label: "Core Experience", color: "bg-slate-50 dark:bg-slate-800", delay: 0.3 }
+                ].map((item, i) => (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: item.delay, duration: 0.5 }}
+                    viewport={{ once: true }}
+                    key={i} 
+                    className={`aspect-square ${item.color} rounded-[3.5rem] p-12 flex flex-col justify-end border border-slate-200/50 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-700 group`}
+                  >
+                     <div className={`text-6xl font-black mb-4 tracking-tighter font-roboto ${item.featured ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{item.val}</div>
+                     <div className={`text-[12px] font-black uppercase tracking-[0.3em] font-inter ${item.featured ? 'text-blue-100' : 'text-slate-400'}`}>{item.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+           </div>
+        </section>
+
+        <section id="features" className="py-40 bg-slate-50/50 dark:bg-darkSurface/10 scroll-mt-32">
            <div className="max-w-7xl mx-auto px-6">
               <div className="text-center mb-32">
-                 <motion.div 
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   className="text-gammaBlue font-black text-[12px] uppercase tracking-[0.5em] mb-6 font-inter"
-                 >
-                    Advanced Modules
-                 </motion.div>
-                 <motion.h2 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  className="text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-none font-roboto"
-                 >
-                    Technical Mastery.
-                 </motion.h2>
-                 <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium font-inter"
-                 >
-                    Our infrastructure handles the complexity so you can focus on user acquisition and brand growth.
-                 </motion.p>
+                 <motion.div className="text-gammaBlue font-black text-[12px] uppercase tracking-[0.5em] mb-6 font-inter">Advanced Modules</motion.div>
+                 <motion.h2 className="text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-none font-roboto">Technical Mastery.</motion.h2>
+                 <motion.p className="text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium font-inter">Our infrastructure handles the complexity so you can focus on user acquisition and brand growth.</motion.p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                  {FEATURES.map((f, i) => (
-                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    viewport={{ once: true }}
-                    key={i}
-                   >
-                    <FeatureCard 
-                      title={f.title} 
-                      description={f.description} 
-                      icon={f.icon} 
-                      variant="elevated"
-                    />
+                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} key={i}>
+                    <FeatureCard title={f.title} description={f.description} icon={f.icon} variant="elevated" />
                    </motion.div>
                  ))}
               </div>
            </div>
         </section>
 
-        {/* Closing CTA */}
-        <section id="contact" className="py-48 scroll-mt-20">
+        <section id="contact" className="py-48 scroll-mt-32">
            <div className="max-w-7xl mx-auto px-6">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                viewport={{ once: true }}
-                className="bg-slate-950 dark:bg-slate-900 rounded-[5rem] p-20 md:p-32 relative overflow-hidden text-center shadow-[0_50px_100px_-20px_rgba(72,91,255,0.25)] border border-white/5"
-              >
+              <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} viewport={{ once: true }} className="bg-slate-950 dark:bg-slate-900 rounded-[5rem] p-20 md:p-32 relative overflow-hidden text-center shadow-[0_50px_100px_-20px_rgba(72,91,255,0.25)] border border-white/5">
                  <div className="absolute inset-0 bg-gradient-to-br from-gammaBlue/30 via-transparent to-gammaAqua/20 opacity-40" />
-                 
                  <div className="relative z-10 max-w-4xl mx-auto">
-                    <h2 className="text-6xl md:text-[110px] font-black text-white mb-14 tracking-tighter leading-[0.9] font-roboto">
-                       Build Your <br /><span className="text-shimmer italic">Digital Legacy.</span>
-                    </h2>
-                    <p className="text-2xl text-slate-300 mb-20 font-medium leading-relaxed font-inter opacity-90">
-                       Partner with GammaSweep to deploy the most sophisticated B2B social gaming business model available today.
-                    </p>
+                    <div className="text-gammaAqua font-black text-[12px] uppercase tracking-[0.5em] mb-10 font-inter opacity-80">Get in Touch</div>
+                    <h2 className="text-6xl md:text-[110px] font-black text-white mb-14 tracking-tighter leading-[0.9] font-roboto">Build Your <br /><span className="text-shimmer italic">Digital Legacy.</span></h2>
+                    <p className="text-2xl text-slate-300 mb-20 font-medium leading-relaxed font-inter opacity-90">Partner with GammaSweep to deploy the most sophisticated B2B social gaming business model available today.</p>
                     <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-                       <motion.button 
-                        whileHover={{ scale: 1.05, translateY: -3 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="w-full sm:w-auto bg-gammaBlue text-white font-black px-20 py-8 rounded-2xl hover:bg-white hover:text-slate-950 transition-all text-2xl shadow-3xl shadow-gammaBlue/40 uppercase tracking-widest font-roboto"
-                       >
-                          Get Started
-                       </motion.button>
-                       <motion.button 
-                        whileHover={{ backgroundColor: "rgba(255,255,255,0.1)", translateY: -3 }}
-                        className="w-full sm:w-auto bg-white/5 border border-white/10 text-white font-black px-20 py-8 rounded-2xl transition-all text-2xl uppercase tracking-widest font-roboto"
-                       >
-                          Contact Sales
-                       </motion.button>
+                       <motion.button onClick={() => scrollToSection('contact')} whileHover={{ scale: 1.05, translateY: -3 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto bg-gammaBlue text-white font-black px-20 py-8 rounded-2xl hover:bg-white hover:text-slate-950 transition-all text-2xl shadow-3xl shadow-gammaBlue/40 uppercase tracking-widest font-roboto text-center">Get Started Now</motion.button>
+                       <motion.button onClick={() => scrollToSection('contact')} whileHover={{ backgroundColor: "rgba(255,255,255,0.1)", translateY: -3 }} className="w-full sm:w-auto bg-white/5 border border-white/10 text-white font-black px-20 py-8 rounded-2xl transition-all text-2xl uppercase tracking-widest font-roboto">Contact Sales</motion.button>
                     </div>
                  </div>
               </motion.div>
@@ -331,27 +290,23 @@ const App: React.FC = () => {
          <div className="max-w-7xl mx-auto px-6">
             <div className="grid md:grid-cols-4 gap-24 mb-32">
                <div className="col-span-1 md:col-span-1">
-                  <div className="mb-12 group">
-                    <Logo />
-                  </div>
-                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs font-medium text-lg font-inter">
-                    Institutional-grade infrastructure for professional B2B social gaming operators.
-                  </p>
+                  <div className="mb-12 group"><Logo /></div>
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs font-medium text-lg font-inter">Institutional-grade infrastructure for professional B2B social gaming operators.</p>
                </div>
                <div>
                   <h4 className="font-black text-slate-900 dark:text-white mb-12 uppercase text-[12px] tracking-[0.4em] font-roboto">Platform</h4>
                   <ul className="space-y-6 text-slate-500 dark:text-slate-400 font-bold text-sm font-inter">
-                     <li><a href="#hero" className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Core Engine</a></li>
-                     <li><a href="#features" className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Compliance API</a></li>
-                     <li><a href="#features" className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Game Library</a></li>
+                     <li><button onClick={() => scrollToSection('hero')} className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Core Engine</button></li>
+                     <li><button onClick={() => scrollToSection('services')} className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Compliance API</button></li>
+                     <li><button onClick={() => scrollToSection('features')} className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Game Library</button></li>
                   </ul>
                </div>
                <div>
                   <h4 className="font-black text-slate-900 dark:text-white mb-12 uppercase text-[12px] tracking-[0.4em] font-roboto">Resources</h4>
                   <ul className="space-y-6 text-slate-500 dark:text-slate-400 font-bold text-sm font-inter">
-                     <li><a href="#" className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Documentation</a></li>
-                     <li><a href="#" className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Market Insights</a></li>
-                     <li><a href="#" className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Compliance Hub</a></li>
+                     <li><button onClick={() => scrollToSection('hero')} className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Documentation</button></li>
+                     <li><button onClick={() => scrollToSection('about')} className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Market Insights</button></li>
+                     <li><button onClick={() => scrollToSection('contact')} className="hover:text-gammaBlue transition-colors uppercase tracking-widest">Compliance Hub</button></li>
                   </ul>
                </div>
                <div>
@@ -362,12 +317,11 @@ const App: React.FC = () => {
                   </ul>
                </div>
             </div>
-            
             <div className="flex flex-col md:flex-row justify-between items-center gap-12 pt-20 border-t border-slate-100 dark:border-white/5 text-[11px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.5em] font-inter">
                <div>© 2024 GammaSweep. Built for Performance.</div>
                <div className="flex gap-14">
-                  <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</a>
-                  <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Service Terms</a>
+                  <button className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</button>
+                  <button className="hover:text-slate-900 dark:hover:text-white transition-colors">Service Terms</button>
                </div>
             </div>
          </div>
